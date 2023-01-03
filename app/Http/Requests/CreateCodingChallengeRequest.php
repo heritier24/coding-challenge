@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
 
 class CreateCodingChallengeRequest extends FormRequest
 {
@@ -24,9 +27,26 @@ class CreateCodingChallengeRequest extends FormRequest
     public function rules()
     {
         return [
-            'source' => 'required|string',
-            'sourceIdenti' => 'required|string',
-            'authKey' => 'required|string',
+            'reportType' => 'required|string',
+            'message' => 'required|string',
         ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @throws HttpResponseException
+     */
+    protected function failedValidation(Validator $validator): void
+    {
+        if ($validator->fails()) {
+            throw new HttpResponseException(response()
+                ->json(
+                    [
+                        "errors" => $validator->errors()->all()
+                    ],
+                    Response::HTTP_UNPROCESSABLE_ENTITY
+                ));
+        }
     }
 }

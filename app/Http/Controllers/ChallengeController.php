@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateCodingChallengeRequest;
+use App\Http\Requests\UpdateCodingChallengeRequest;
 use App\Services\ChallengeService;
 use Illuminate\Http\Request;
 
 class ChallengeController extends Controller
 {
-    public function __construct(private ChallengeService $service) {
+    public function __construct(private ChallengeService $service)
+    {
     }
 
     /**
@@ -18,12 +21,10 @@ class ChallengeController extends Controller
     public function listChallenge()
     {
         try {
-            
-            
-            $result = $this->service->listChallenge();
+
+            $result = $this->service->listReports();
 
             return $result;
-
         } catch (\Exception $e) {
             [$message, $statusCode, $exceptionCode] = getHttpMessageAndStatusCodeFromException($e);
 
@@ -33,10 +34,12 @@ class ChallengeController extends Controller
         }
     }
 
-    public function createChallenge()
+    public function createChallenge(CreateCodingChallengeRequest $request)
     {
         try {
-            //code...
+            $result = $this->service->createdReports($request->reportType, $request->message);
+
+            return $result;
         } catch (\Exception $e) {
             [$message, $statusCode, $exceptionCode] = getHttpMessageAndStatusCodeFromException($e);
 
@@ -46,10 +49,12 @@ class ChallengeController extends Controller
         }
     }
 
-    public function updateChallenge()
+    public function updateChallenge(UpdateCodingChallengeRequest $request, $id)
     {
         try {
-            //code...
+            $result = $this->service->updateReports($id, $request->state);
+
+            return $result;
         } catch (\Exception $e) {
             [$message, $statusCode, $exceptionCode] = getHttpMessageAndStatusCodeFromException($e);
 

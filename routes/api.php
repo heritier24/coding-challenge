@@ -19,11 +19,10 @@ Route::prefix('app')->group(function () {
 
     Route::prefix('challenge')->group(function () {
 
-        Route::get('/list-messages-challenge', [ChallengeController::class, 'listChallenge']);
+        Route::get('/reports', [ChallengeController::class, 'listChallenge']);
 
-        Route::post('/create-challenge-messages', [ChallengeController::class, 'createChallenge']);
+        Route::post('/reports-create', [ChallengeController::class, 'createChallenge']);
 
-        Route::put('/update-challenge-status', [ChallengeController::class, 'updateChallenge']);
-
+        Route::put('/reports/{reportId}', [ChallengeController::class, 'updateChallenge']);
     });
 });

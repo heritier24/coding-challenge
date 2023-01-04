@@ -13,7 +13,7 @@ class ChallengeService
                                reports.reportType, reports.message, 
                                reports.state 
                                FROM reports 
-                               WHERE reports.state = 'OPEN' ");
+                               WHERE reports.state = 'OPEN' AND reports.reportType = 'SPAM'");
 
         return $reports;
     }
@@ -39,7 +39,7 @@ class ChallengeService
         } else {
 
             $updateReports = Reports::where('id', $id)->update([
-                
+
                 'state' => $state,
             ]);
         }
